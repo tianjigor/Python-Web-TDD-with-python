@@ -20,8 +20,26 @@ class HomePageTest(TestCase):
         self.assertTrue(response.content.endswith(b'</html>'))
 
 
-    def test_home_page_returns_correct_html(self):
+    # def test_home_page_returns_correct_html(self):
+    #     request = HttpRequest()
+    #     response = home_page(request)
+    #     excepted_html = render_to_string('home.html')
+    #     print(excepted_html)
+    #     print(response.content.decode())
+    #     self.assertEqual(response.content.decode(), excepted_html)
+
+
+    def test_home_page_can_save_a_POST_request(self):
         request = HttpRequest()
+        request.method = 'POST'
+        request.POST['item_text'] = 'A new list item'
+
         response = home_page(request)
-        excepted_html = render_to_string('home.html')
-        self.assertEqual(response.content.decode(), excepted_html)
+        self.assertIn('A new list item', response.content.decode())
+        expected_html = render_to_string(
+            'home.html',
+            {'new_item_text': 'A new list item'}
+        )
+        print(expected_html)
+        print(response.content.decode())
+        self.assertEqual(response.content.decode(), expected_html)

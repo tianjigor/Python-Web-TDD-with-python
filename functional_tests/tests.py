@@ -52,10 +52,10 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('Use peacock feathers to make a fly')
         inputbox.send_keys(Keys.ENTER)
-
+        time.sleep(3)
         # 页面再次更新，她的清单中显示了这两个待办事项
         self.check_for_row_in_list_table('1: Buy peacock feathers')
-        self.check_for_row_in_list_table('8: Use peacock feathers to make a fly')
+        self.check_for_row_in_list_table('2: Use peacock feathers to make a fly')
         # self.fail('Finish the test!')
 
         # 现在一个叫作弗朗西斯的新用户访问了网站
@@ -94,7 +94,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn(row_text, [row.text for row in rows])
 
 
-    def test_can_start_alist_and_retrieve_it_later(self):
-        # 伊迪丝听说有一个很酷的在线待办事项应用
-        # 她去看了这个应用的首页
-        self.browser.get(self.live_server_url)
+    # def test_can_start_alist_and_retrieve_it_later(self):
+    #     # 伊迪丝听说有一个很酷的在线待办事项应用
+    #     # 她去看了这个应用的首页
+    #     self.browser.get(self.live_server_url)

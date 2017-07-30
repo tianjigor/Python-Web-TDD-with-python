@@ -13,44 +13,12 @@ class HomePageTest(TestCase):
         self.assertEqual(found.func, home_page)
 
 
-    def test_home_page_returns_correct_html(self):
-        request = HttpRequest()
-        response = home_page(request)
-        self.assertTrue(response.content.startswith(b'<html>'))
-        self.assertIn(b'<title>Start a new To-Do lists</title>', response.content)
-        self.assertTrue(response.content.endswith(b'</html>'))
-
-
-from lists.models import Item
-
-class ListAndItemModelTest(TestCase):
-
-    def test_saving_and_retrieving_items(self):
-        list_ = List()
-        list_.save()
-
-        first_item = Item()
-        first_item.text = 'The first (ever) list item'
-        first_item.list = list_
-        first_item.save()
-
-        second_item = Item()
-        second_item.text = 'Item the second'
-        second_item.list = list_
-        second_item.save()
-
-        save_list = List.objects.first()
-        self.assertEqual(save_list, list_)
-
-        save_items = Item.objects.all()
-        self.assertEqual(save_items.count(), 2)
-
-        first_saved_item = save_items[0]
-        second_saved_item = save_items[1]
-        self.assertEqual(first_saved_item.text, 'The first (ever) list item')
-        self.assertEqual(first_saved_item.list, list_)
-        self.assertEqual(second_saved_item.text, 'Item the second')
-        self.assertEqual(second_saved_item.list, list_)
+    # def test_home_page_returns_correct_html(self):
+    #     request = HttpRequest()
+    #     response = home_page(request)
+    #     # self.assertTrue(response.content.startswith(b'<html>'))
+    #     self.assertIn(b'<title>Start a new To-Do lists</title>', response.content)
+    #     self.assertTrue(response.content.endswith(b'</html>'))
 
 
 class ListViewTest(TestCase):

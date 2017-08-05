@@ -1,6 +1,6 @@
 from django.test import TestCase
 from lists.models import Item, List
-from lists.forms import ItemForm, EMPTY_LIST_ERROR
+from lists.forms import ItemForm, EMPTY_LIST_ERROR, ExistingListItemForm
 from django.core.exceptions import ValidationError
 
 
@@ -51,3 +51,9 @@ class ItemFormTest(TestCase):
         item = Item(list=list2, text='bla')
         item.full_clean() # 不该抛出异常
 
+
+    def test_form_save(self):
+        list = List.objects.create()
+        form = ExistingListItemForm(for_list=list, data={'text': 'hi'})
+        new_item = form.save()
+        self.assertEqual(new_item, Item.objects.all()[0])

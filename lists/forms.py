@@ -14,10 +14,6 @@ EMPTY_LIST_ERROR = "You can't have an empty list item"
 
 class ItemForm(forms.ModelForm):
 
-    def save(self, for_list):
-        self.instance.list = for_list
-        return super().save()
-
     class Meta:
         model = Item
         fields = ('text',)
@@ -32,12 +28,19 @@ class ItemForm(forms.ModelForm):
         }
 
 
+    def save(self, for_list):
+        self.instance.list = for_list
+        return super().save()
+
+
 # 12.3
 from django.core.exceptions import ValidationError
 
 DUPLICATE_ITEM_ERROR = "You've already got this in your list"
 
 class ExistingListItemForm(ItemForm):
+
+
     def __init__(self, for_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.instance.list = for_list
@@ -48,4 +51,8 @@ class ExistingListItemForm(ItemForm):
             self.instance.validate_unique()
         except ValidationError as e:
             e.error_dict = {'text': [DUPLICATE_ITEM_ERROR]}
-            self._update_error(e)
+            self._update_errors(e)
+
+
+    def save(self):
+        return forms.models.ModelForm.save(self)
